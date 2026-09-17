@@ -1,0 +1,31 @@
+# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+
+type vendor_gppservice, domain, coredomain;
+type vendor_gppservice_exec, system_file_type, exec_type, file_type;
+
+init_daemon_domain(vendor_gppservice)
+
+add_service(vendor_gppservice, vendor_gpp_service)
+binder_use(vendor_gppservice);
+binder_call(vendor_gppservice, system_server);
+binder_service(vendor_gppservice);
+
+hal_client_domain(vendor_gppservice, hal_graphics_composer)
+hal_client_domain(vendor_gppservice, hal_graphics_allocator)
+hal_client_domain(vendor_gppservice, vendor_hal_vpp)
+hal_client_domain(vendor_gppservice, vendor_hal_qspmhal)
+hal_client_domain(vendor_gppservice, vendor_hal_hexlp)
+hal_client_domain(vendor_gppservice, vendor_hal_perf)
+
+allow vendor_gppservice surfaceflinger_service:service_manager find;
+allow vendor_gppservice surfaceflinger:unix_stream_socket { read };
+binder_call(vendor_gppservice, surfaceflinger);
+
+binder_call(vendor_gppservice, platform_app);
+binder_call(vendor_gppservice, priv_app);
+binder_call(vendor_gppservice, untrusted_app_all);
+
+allow vendor_gppservice gpu_device:chr_file rw_file_perms;
+
+set_prop(vendor_gppservice, vendor_sys_gpp_prop);

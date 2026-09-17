@@ -1,0 +1,8 @@
+# Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+
+get_prop(dumpstate,vendor_sys_bugreport_cpuinfo_disable)
+binder_call(dumpstate, virtualizationservice)
+
+# Allow dumpstate to make binder calls to vold
+binder_call(dumpstate, vold)
